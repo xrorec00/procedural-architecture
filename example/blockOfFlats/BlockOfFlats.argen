@@ -1,0 +1,67 @@
+symbol BlockOfFlats {
+	int floors = 5;
+	float width = 6.0;
+	float depth = 4.0;
+	int xSegments = 6;
+	int ySegments = 4;
+	int entranceIndex = 2;
+
+	float floorHeight = 1.0;
+}
+
+rule BlockOfFlatsRule[1] {
+	if ($0._type == "BlockOfFlats") {
+		return true;
+	}
+	else{
+		return false;
+	}
+}{
+	if ($0.floors >= 1) {
+		Cellar cellar;
+		cellar._rotation = $0._rotation;
+		cellar._position = rotate($0._position, cellar._position, $0._rotation);
+		cellar.width = $0.width;
+		cellar.depth = $0.depth;
+		cellar.height = $0.floorHeight - 0.5;
+
+		Stairs stairs;
+		stairs._position = $0._position;
+		stairs._position.y = stairs._position.y - 1.0;
+		stairs._position.x = stairs._position.x + $0.entranceIndex;
+		stairs._position = rotate(stairs._position, $0._position, $0._rotation);
+		stairs._rotation = $0._rotation;
+		stairs.width = $0.width / $0.xSegments;
+		stairs.depth = $0.depth / $0.ySegments;
+		stairs.height = cellar.height;
+
+		int i;
+		for (i = 0; i < $0.floors; i++) {
+			Floor normalFloor;
+			normalFloor.floorNum = i;
+			normalFloor.entranceIndex = $0.entranceIndex;
+			normalFloor._position = $0._position;
+			normalFloor._position.z = normalFloor._position.z + cellar.height + i * $0.floorHeight;
+			normalFloor._rotation = $0._rotation;
+			normalFloor.width = $0.width;
+			normalFloor.depth = $0.depth;
+			normalFloor.height = $0.floorHeight;
+
+			normalFloor.xSegments = $0.xSegments;
+			normalFloor.ySegments = $0.ySegments;
+
+			_output.add(normalFloor);
+		}
+
+		Roof roof;
+		roof._rotation = $0._rotation;
+		roof._position = rotate($0._position, roof._position, $0._rotation);
+		roof._position.z = roof._position.z + cellar.height + $0.floors * $0.floorHeight;
+		roof.width = $0.width;
+		roof.depth = $0.depth;
+
+		_output.add(roof);
+		_output.add(cellar);
+		_output.add(stairs);
+	}
+}

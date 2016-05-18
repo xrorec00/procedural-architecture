@@ -1,0 +1,21 @@
+symbol YSpawner {
+	int yCount = 5;
+}
+
+rule YSpawnerRule[1] {
+	if ($0._type == "YSpawner") {
+		return true;
+	}
+	else{
+		return false;
+	}
+}{
+	int i;
+	for (i=0; i<$0.yCount; i++) {
+		ZSpawner zSpawner;
+		zSpawner._position = $0._position;
+		zSpawner._position.y = zSpawner._position.y + i * 2;
+		_output.add(zSpawner);
+	}
+
+}

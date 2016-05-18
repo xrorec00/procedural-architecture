@@ -1,0 +1,20 @@
+rule initial[0] {
+	if (_output.empty()) {
+		return true;
+	}
+	else{
+		return false;
+	}
+}{
+	Slope slope;
+	_output.add(slope);
+
+	Slope slopeOffset;
+
+	slopeOffset._position.x=10.0;
+	slopeOffset.radius = 1.0;
+	slopeOffset.segments = 20;
+	slopeOffset.height = 5.0;
+
+	_output.add(slopeOffset);
+}

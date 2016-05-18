@@ -1,0 +1,35 @@
+rule initial[0] {
+	if (_output.empty()) {
+		return true;
+	}
+	else{
+		return false;
+	}
+}{
+	Brick brick1;
+	_output.add(brick1);
+
+	Brick brick2;
+	brick2._position.x = 5.0;
+	brick2._position.y = 0.0;
+
+	_output.add(brick2);
+	_output.add(brick2);
+
+	Brick brick3;
+	brick3._position.x = 5.0;
+	brick3._position.y = 10.0;
+	brick3.height = 10.0;
+
+	_output.add(brick3);
+	_output.add(brick3);
+
+	Brick brick4;
+	brick4._position.x = 0.0;
+	brick4._position.y = 10.0;
+	brick4.height = 10.0;
+
+	_output.add(brick4);
+	_output.add(brick4);
+	_output.add(brick1);
+}

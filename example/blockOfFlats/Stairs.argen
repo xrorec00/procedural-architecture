@@ -1,0 +1,57 @@
+symbol Stairs{
+	float height = 1.0;
+	float width = 1.0;
+	float depth = 1.0;
+
+	int steps = 5;
+}{
+	float stepDepth = depth / steps;
+	float stepHeight = height / (steps+1);
+
+	int i=0;
+	for(i=0; i<steps; i++){
+		vec3 outerLeftBottom = {0.0, 0.0, 0.0};
+		outerLeftBottom.z = outerLeftBottom.z + i * stepHeight;
+		outerLeftBottom.y = outerLeftBottom.y + i * stepDepth;
+
+		vec3 innerLeftBottom = {0.0, stepDepth, 0.0};
+		innerLeftBottom.z = innerLeftBottom.z + i * stepHeight;
+		innerLeftBottom.y = innerLeftBottom.y + i * stepDepth;
+
+		vec3 outerRightBottom = {width, 0.0, 0.0};
+		outerRightBottom.z = outerRightBottom.z + i * stepHeight;
+		outerRightBottom.y = outerRightBottom.y + i * stepDepth;
+
+		vec3 innerRightBottom = {width, stepDepth, 0.0};
+		innerRightBottom.z = innerRightBottom.z + i * stepHeight;
+		innerRightBottom.y = innerRightBottom.y + i * stepDepth;
+
+		_mesh.addVertex(outerLeftBottom, innerLeftBottom, outerRightBottom, innerRightBottom);
+
+		vec3 outerLeftTop = {0.0, 0.0, stepHeight};
+		outerLeftTop.z = outerLeftTop.z + (i + 1) * stepHeight;
+		outerLeftTop.y = outerLeftTop.y + (i + 0) * stepDepth;
+
+		vec3 innerLeftTop = {0.0, stepDepth, stepHeight};
+		innerLeftTop.z = innerLeftTop.z + (i + 1) * stepHeight;
+		innerLeftTop.y = innerLeftTop.y + (i + 0) * stepDepth;
+
+		vec3 outerRightTop = {width, 0.0, stepHeight};
+		outerRightTop.z = outerRightTop.z + (i + 1) * stepHeight;
+		outerRightTop.y = outerRightTop.y + (i + 0) * stepDepth;
+
+		vec3 innerRightTop = {width, stepDepth, stepHeight};
+		innerRightTop.z = innerRightTop.z + (i + 1) * stepHeight;
+		innerRightTop.y = innerRightTop.y + (i + 0) * stepDepth;
+
+		_mesh.addVertex(outerLeftTop, innerLeftTop, outerRightTop, innerRightTop);
+
+		_mesh.addFace(2+i*8, 6+i*8, 7+i*8, 3+i*8);
+		_mesh.addFace(7+i*8, 5+i*8, 1+i*8, 3+i*8);
+		_mesh.addFace(5+i*8, 4+i*8, 0+i*8, 1+i*8);
+		_mesh.addFace(0+i*8, 4+i*8, 6+i*8, 2+i*8);
+
+		_mesh.addFace(2+i*8, 3+i*8, 1+i*8, 0+i*8);
+		_mesh.addFace(6+i*8, 7+i*8, 5+i*8, 4+i*8);
+	}
+}

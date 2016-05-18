@@ -1,0 +1,81 @@
+symbol Entrance{
+	float height = 1.0;
+	float width = 1.0;
+	float depth = 1.0;
+
+	float doorDepth = 0.2;
+	float doorOffset = 0.4;
+	float doorHeight = 0.3;
+	float doorWidth = 0.3;
+}{
+	// Wall
+	float sidesDepth = depth - doorDepth;
+
+	vec3 outerWallLeftBottom = {0.0, 0.0, 0.0};
+	vec3 outerWallLeftTop = {0.0, 0.0, height};
+	vec3 outerWallRightBottom = {width, 0.0, 0.0};
+	vec3 outerWallRightTop = {width, 0.0, height};
+
+	_mesh.addVertex(outerWallLeftBottom, outerWallLeftTop, outerWallRightBottom, outerWallRightTop);
+
+	vec3 innerWallLeftBottom = {0.0, sidesDepth, 0.0};
+	vec3 innerWallLeftTop = {0.0, sidesDepth, height};
+	vec3 innerWallRightBottom = {width, sidesDepth, 0.0};
+	vec3 innerWallRightTop = {width, sidesDepth, height};
+
+	_mesh.addVertex(innerWallLeftBottom, innerWallLeftTop, innerWallRightBottom, innerWallRightTop);
+	// inner wall sides
+
+	_mesh.addFace(0, 1, 5, 4);
+	_mesh.addFace(3, 7, 5, 1);
+	_mesh.addFace(3, 2, 6, 7);
+	_mesh.addFace(0, 4, 6, 2);
+
+	// // Door
+	vec3 outerDoorLeftBottom = {doorOffset, sidesDepth, 0.0};
+	vec3 outerDoorLeftTop = {doorOffset, sidesDepth, doorHeight};
+
+	vec3 outerDoorRightBottom = {doorOffset, sidesDepth, 0.0};
+	outerDoorRightBottom.x = outerDoorRightBottom.x + doorWidth;
+	vec3 outerDoorRightTop = {doorOffset, sidesDepth, doorHeight};
+	outerDoorRightTop.x = outerDoorRightTop.x + doorWidth;
+
+	_mesh.addVertex(outerDoorLeftBottom, outerDoorLeftTop, outerDoorRightBottom, outerDoorRightTop);
+
+	vec3 innerDoorLeftBottom = {doorOffset, depth, 0.0};
+	vec3 innerDoorLeftTop = {doorOffset, depth, doorHeight};
+
+	vec3 innerDoorRightBottom = {doorOffset, depth, 0.0};
+	innerDoorRightBottom.x = innerDoorRightBottom.x + doorWidth;
+	vec3 innerDoorRightTop = {doorOffset, depth, doorHeight};
+	innerDoorRightTop.x = innerDoorRightTop.x + doorWidth;
+
+	_mesh.addVertex(innerDoorLeftBottom, innerDoorLeftTop, innerDoorRightBottom, innerDoorRightTop);
+
+	// Door walls
+	_mesh.addFace(8, 9, 13, 12);
+	_mesh.addFace(11, 15, 13, 9);
+	_mesh.addFace(11, 10, 14, 15);
+	_mesh.addFace(8, 12, 14, 10);
+	// Door
+	_mesh.addFace(12, 13, 15, 14);
+
+	// // Wall
+	vec3 interceptionLeftWall;
+	interceptionLeftWall = innerWallLeftBottom;
+	interceptionLeftWall.z = doorHeight;
+
+	_mesh.addVertex(interceptionLeftWall);
+
+	_mesh.addFace(9, 8, 4, 16);
+
+	vec3 interceptionRightWall;
+	interceptionRightWall = innerWallRightBottom;
+	interceptionRightWall.z = doorHeight;
+
+	_mesh.addVertex(interceptionRightWall);
+
+	_mesh.addFace(10, 11, 17, 6);
+
+	_mesh.addFace(16, 5, 7, 17);
+}

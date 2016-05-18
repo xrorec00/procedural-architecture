@@ -1,0 +1,150 @@
+symbol Balcony {
+	float height = 1.0;
+	float width = 1.0;
+	float depth = 1.0;
+	float ledgeSize = 1.0;
+}{
+	vec3 innerLeftBottom = {0.0, 0.0, 0.0};
+	vec3 innerLeftTop = {0.0, 0.0, height};
+	vec3 innerRightBottom = {width, 0.0, 0.0};
+	vec3 innerRightTop = {width, 0.0, height};
+
+	_mesh.addVertex(innerLeftBottom, innerLeftTop, innerRightBottom, innerRightTop);
+
+	vec3 outerRightBottom = {width, 0.0, 0.0};
+	outerRightBottom.y = 0 - depth;
+	vec3 outerLeftBottom = {0.0, 0.0, 0.0};
+	outerLeftBottom.y = 0 - depth;
+	vec3 outerRightTop = {width, 0.0, height};
+	outerRightTop.y = 0 - depth;
+	vec3 outerLeftTop = {0.0, 0.0, height};
+	outerLeftTop.y = 0 - depth;
+
+	_mesh.addVertex(outerRightBottom, outerLeftBottom, outerLeftTop, outerRightTop);
+
+	//wall
+	_mesh.addFace(0, 1, 3, 2);
+
+	//floor
+	_mesh.addFace(0, 2, 4, 5);
+
+	//ceiling
+	_mesh.addFace(1, 3, 7, 6);
+
+	//left
+	_mesh.addFace(5, 6, 1, 0);
+
+	//right
+	_mesh.addFace(4, 7, 3, 2);
+
+	//window
+	vec3 windowOuterLeftBottom;
+	windowOuterLeftBottom = outerLeftBottom;
+	windowOuterLeftBottom.x = windowOuterLeftBottom.x + width * 0.1;
+	windowOuterLeftBottom.y = 0 - depth;
+	windowOuterLeftBottom.z = windowOuterLeftBottom.z + height * 0.4;
+
+	vec3 windowOuterLeftTop;
+	windowOuterLeftTop = outerLeftTop;
+	windowOuterLeftTop.x = windowOuterLeftTop.x + width * 0.1;
+	windowOuterLeftTop.y = 0 - depth;
+	windowOuterLeftTop.z = windowOuterLeftTop.z - height * 0.1;
+
+	vec3 windowOuterRightTop;
+	windowOuterRightTop = outerRightTop;
+	windowOuterRightTop.x = windowOuterRightTop.x - width * 0.1;
+	windowOuterRightTop.y = 0 - depth;
+	windowOuterRightTop.z = windowOuterRightTop.z - height * 0.1;
+
+	vec3 windowOuterRightBottom;
+	windowOuterRightBottom = outerRightBottom;
+	windowOuterRightBottom.x = windowOuterRightBottom.x - width * 0.1;
+	windowOuterRightBottom.y = 0 - depth;
+	windowOuterRightBottom.z = windowOuterRightBottom.z + height * 0.4;
+
+	_mesh.addVertex(windowOuterLeftBottom, windowOuterLeftTop, windowOuterRightTop, windowOuterRightBottom);
+
+	vec3 windowInnerLeftBottom;
+	windowInnerLeftBottom = windowOuterLeftBottom;
+	windowInnerLeftBottom.y = windowInnerLeftBottom.y + depth * 0.1;
+
+	vec3 windowInnerLeftTop;
+	windowInnerLeftTop = windowOuterLeftTop;
+	windowInnerLeftTop.y = windowInnerLeftTop.y + depth * 0.1;
+
+	vec3 windowInnerRightTop;
+	windowInnerRightTop = windowOuterRightTop;
+	windowInnerRightTop.y = windowInnerRightTop.y + depth * 0.1;
+
+	vec3 windowInnerRightBottom;
+	windowInnerRightBottom = windowOuterRightBottom;
+	windowInnerRightBottom.y = windowInnerRightBottom.y + depth * 0.1;
+
+	_mesh.addVertex(windowInnerLeftBottom, windowInnerLeftTop, windowInnerRightTop, windowInnerRightBottom);
+
+	//window inner
+	_mesh.addFace(8,9,13,12);
+	_mesh.addFace(9,10,14,13);
+	_mesh.addFace(10,11,15,14);
+	_mesh.addFace(8,12,15,11);
+
+	//window ouside walls
+	_mesh.addFace(5,6,9,8);
+	_mesh.addFace(6,7,10,9);
+	_mesh.addFace(10,7,4,11);
+	_mesh.addFace(5,8,11,4);
+
+	vec3 roomOuterRightBottom;
+	roomOuterRightBottom = windowInnerRightBottom;
+	roomOuterRightBottom.z = 0.1 * height;
+
+	vec3 roomOuterLeftBottom;
+	roomOuterLeftBottom = windowInnerLeftBottom;
+	roomOuterLeftBottom.z = 0.1 * height;
+
+	_mesh.addVertex(roomOuterLeftBottom, roomOuterRightBottom);
+
+	_mesh.addFace(17,15,12,16);
+
+	vec3 roomInnerRightBottom;
+	roomInnerRightBottom.x = 0.9 * width;
+	roomInnerRightBottom.y = 0 - (0.1 * height);
+	roomInnerRightBottom.z = 0.1 * height;
+
+	vec3 roomInnerLeftBottom;
+	roomInnerLeftBottom.x = 0.1 * width;
+	roomInnerLeftBottom.y = 0 - (0.1 * height);
+	roomInnerLeftBottom.z = 0.1 * height;
+
+	vec3 roomInnerRightTop;
+	roomInnerRightTop.x = 0.9 * width;
+	roomInnerRightTop.y = 0 - (0.1 * height);
+	roomInnerRightTop.z = 0.9 * height;
+
+	vec3 roomInnerLeftTop;
+	roomInnerLeftTop.x = 0.1 * width;
+	roomInnerLeftTop.y = 0- (0.1 * height);
+	roomInnerLeftTop.z = 0.9 * height;
+
+	_mesh.addVertex(roomInnerRightBottom, roomInnerLeftBottom, roomInnerLeftTop, roomInnerRightTop);
+
+	_mesh.addFace(16,19,18,17);
+
+	_mesh.addFace(16,13,20,19);
+	_mesh.addFace(17,18,21,14);
+	_mesh.addFace(13,14,21,20);
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// _mesh.addFace(4, 5, 6, 7);
+}

@@ -1,0 +1,192 @@
+symbol Floor {
+	int floorNum = 0;
+	int entranceIndex;
+
+	float width = 1.0;
+	float height = 1.0;
+	float depth = 1.0;
+
+	int xSegments = 1;
+	int ySegments = 1;
+}
+
+rule BlockOfFlatsRule[1] {
+	if ($0._type == "Floor") {
+		return true;
+	}
+	else{
+		return false;
+	}
+}{
+	float xSegmentWidth = $0.width / $0.xSegments;
+	float ySegmentWidth = $0.depth / $0.ySegments;
+
+	vec3 origin = {0.0, 0.0, 0.0};
+
+	int i;
+	for (i = 0; i < $0.xSegments; i++) {
+		//front
+		int segmentsMinusTwo = $0.xSegments-2;
+
+		if (i > 1 && i<segmentsMinusTwo) {
+			if ($0.floorNum==0 && i==$0.entranceIndex) {
+				Entrance entrance;
+				entrance._rotation = $0._rotation;
+				entrance._position = $0._position;
+				entrance._position.x = entrance._position.x + i * xSegmentWidth;
+				entrance._position = rotate(entrance._position, origin, entrance._rotation);
+				entrance.depth = 0.5;
+				_output.add(entrance);
+			}
+			else {
+				Balcony balcony;
+
+				balcony._rotation = $0._rotation;
+
+				balcony._position = $0._position;
+				balcony._position.x = balcony._position.x + i * xSegmentWidth;
+				balcony._position = rotate(balcony._position, origin, balcony._rotation);
+				
+
+				balcony.height = $0.height;
+				balcony.width = xSegmentWidth;
+				balcony.depth = ySegmentWidth*0.5;
+
+				_output.add(balcony);
+			}
+		}
+		else {
+			WindowWall frontWall;
+
+			frontWall._rotation = $0._rotation;
+
+			frontWall._position = $0._position;
+			frontWall._position.x = frontWall._position.x + i * xSegmentWidth;
+			frontWall._position = rotate(frontWall._position, origin, frontWall._rotation);
+			
+
+			frontWall.height = $0.height;
+			frontWall.width = xSegmentWidth;
+			frontWall.windowType = "single";
+
+			_output.add(frontWall);
+		}
+
+		//back
+		if (i > 1 && i<segmentsMinusTwo) {
+			Balcony balcony;
+
+			balcony._rotation = $0._rotation;
+
+			balcony._position = $0._position;
+			balcony._position.x = balcony._position.x + (i + 1) * xSegmentWidth;
+			balcony._position.y = balcony._position.y + $0.ySegments * ySegmentWidth;
+			balcony._position = rotate(balcony._position, origin, balcony._rotation);
+
+			balcony._rotation.z = balcony._rotation.z + 180;
+				
+
+			balcony.height = $0.height;
+			balcony.width = xSegmentWidth;
+			balcony.depth = ySegmentWidth*0.5;
+
+			_output.add(balcony);
+		}
+		else{
+			WindowWall backWall;
+
+			vec3 angle = {0.0, 0.0, 180.0};
+
+			backWall._rotation = $0._rotation;
+
+			backWall._position = $0._position;
+			backWall._position.x = backWall._position.x + (i+1) * xSegmentWidth;
+			backWall._position.y = backWall._position.y + $0.depth;
+			backWall._position = rotate(backWall._position, origin, backWall._rotation);
+
+			backWall._rotation = backWall._rotation + angle;
+			
+
+			backWall.height = $0.height;
+			backWall.width = xSegmentWidth;
+			backWall.windowType = "single";
+
+			_output.add(backWall);
+		}
+	}
+
+	int j;
+	for (j = 0; j < $0.ySegments; j++) {
+		//left
+		int segmentsMinusOne = $0.ySegments-1;
+		vec3 angle = {0.0, 0.0, 270.0};
+
+		if (j == 0 || j == segmentsMinusOne) {
+			Wall leftWall;
+
+			leftWall._rotation = $0._rotation;
+
+			leftWall._position = $0._position;
+			leftWall._position.y = leftWall._position.y + (j+1) * ySegmentWidth;
+			leftWall._position = rotate(leftWall._position, origin, leftWall._rotation);
+			leftWall._rotation = leftWall._rotation + angle;
+
+			leftWall.height = $0.height;
+			leftWall.width = ySegmentWidth;
+
+			_output.add(leftWall);
+		}
+		else {
+			WindowWall leftWall;
+
+			leftWall._rotation = $0._rotation;
+
+			leftWall._position = $0._position;
+			leftWall._position.y = leftWall._position.y + (j+1) * ySegmentWidth;
+			leftWall._position = rotate(leftWall._position, origin, leftWall._rotation);
+			leftWall._rotation = leftWall._rotation + angle;
+
+			leftWall.height = $0.height;
+			leftWall.width = ySegmentWidth;
+			leftWall.windowType = "single";
+
+			_output.add(leftWall);
+		}
+
+		//right
+		vec3 angle = {0.0, 0.0, 90.0};
+		if (j == 0 || j == segmentsMinusOne) {
+			Wall rightWall;
+
+			rightWall._rotation = $0._rotation;
+
+			rightWall._position = $0._position;
+			rightWall._position.y = rightWall._position.y + j * ySegmentWidth;
+			rightWall._position.x = rightWall._position.x + $0.width;
+			rightWall._position = rotate(rightWall._position, origin, rightWall._rotation);
+			rightWall._rotation = rightWall._rotation + angle;
+
+			rightWall.height = $0.height;
+			rightWall.width = ySegmentWidth;
+
+			_output.add(rightWall);
+		}
+		else {
+			WindowWall rightWall;
+
+			rightWall._rotation = $0._rotation;
+
+			rightWall._position = $0._position;
+			rightWall._position.y = rightWall._position.y + j * ySegmentWidth;
+			rightWall._position.x = rightWall._position.x + $0.width;
+			rightWall._position = rotate(rightWall._position, origin, rightWall._rotation);
+			rightWall._rotation = rightWall._rotation + angle;
+
+			rightWall.height = $0.height;
+			rightWall.width = ySegmentWidth;
+			rightWall.windowType = "single";
+
+			_output.add(rightWall);
+		}
+	}
+}

@@ -1,0 +1,41 @@
+symbol Slope {
+	float radius = 2.0;
+	int segments = 30;
+	float height = 1.0;
+}{
+	vec3 origin = {0.0, 0.0, 0.0};
+
+	float angle = 360.0 / segments;
+	vec3 rotation = {0.0, 0.0, angle};
+
+	//bottom
+	vec3 p1bottom = {radius, 0.0, 0.0};
+
+	vec3 p2bottom;
+	p2bottom = rotate(p1bottom, origin, rotation);
+
+	//upper
+	vec3 p1upper = {radius, 0.0, height};
+
+	vec3 p2upper = {0.0, 0.0, height};
+	p2upper.x = p2bottom.x;
+	p2upper.y = p2bottom.y;
+
+	_mesh.addVertex(p1bottom, p1upper, p2upper, p2bottom);
+	_mesh.addFace(0, 1, 2, 3);
+	int vertexCount = 4;
+
+	int i;
+	int iterations = segments -1;
+	for (i = 0; i < iterations; i++) {
+		p1bottom = rotate(p1bottom, origin, rotation);
+		p1upper = rotate(p1upper, origin, rotation);
+		
+		p2bottom = rotate(p2bottom, origin, rotation);
+		p2upper = rotate(p2upper, origin, rotation);
+
+		_mesh.addVertex(p1bottom, p1upper, p2upper, p2bottom);
+
+		_mesh.addFace((vertexCount)+4*i, (vertexCount+1)+4*i, (vertexCount+2)+4*i, (vertexCount+3)+4*i);
+	}	
+}

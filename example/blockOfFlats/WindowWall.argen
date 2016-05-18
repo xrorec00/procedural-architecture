@@ -1,0 +1,115 @@
+symbol WindowWall {
+	string windowType;
+
+	float height = 1.0;
+	float width = 1.0;
+	float depth = 0.1;
+	float wallBorderTop = 0.1;
+	float wallBorderLeft = 0.2;
+}{
+	// BORDER
+	// outer
+	vec3 outerBorder0 = {0.0, 0.0, 0.0};
+	vec3 outerBorder1 = {0.0, 0.0, height};
+	vec3 outerBorder2 = {width, 0.0, height};
+	vec3 outerBorder3 = {width, 0.0, 0.0};
+
+	_mesh.addVertex(outerBorder0, outerBorder1, outerBorder2, outerBorder3);
+
+	// inner
+	vec3 innerBorder0;
+	innerBorder0 = outerBorder0;
+	innerBorder0.x = innerBorder0.x + wallBorderLeft;
+	innerBorder0.z = innerBorder0.z + wallBorderTop;
+
+	vec3 innerBorder1;
+	innerBorder1 = outerBorder1;
+	innerBorder1.x = innerBorder1.x + wallBorderLeft;
+	innerBorder1.z = innerBorder1.z - wallBorderTop;
+
+	vec3 innerBorder2;
+	innerBorder2 = outerBorder2;
+	innerBorder2.x = innerBorder2.x - wallBorderLeft;
+	innerBorder2.z = innerBorder2.z - wallBorderTop;
+
+
+	vec3 innerBorder3;
+	innerBorder3 = outerBorder3;
+	innerBorder3.x = innerBorder3.x - wallBorderLeft;
+	innerBorder3.z = innerBorder3.z + wallBorderTop;
+
+	_mesh.addVertex(innerBorder0, innerBorder1, innerBorder2, innerBorder3);
+
+	_mesh.addFace(0, 1, 5, 4);
+	_mesh.addFace(1, 2, 6, 5);
+	_mesh.addFace(2, 3, 7, 6);
+	_mesh.addFace(0, 4, 7, 3);
+
+	//////////////////////////////////////
+	if (windowType == "single") {
+		vec3 v0;
+		v0 = innerBorder0;
+		v0.y = depth;
+
+		vec3 v1;
+		v1 = innerBorder1;
+		v1.y = depth;
+
+		vec3 v2;
+		v2 = innerBorder2;
+		v2.y = depth;
+
+		vec3 v3;
+		v3 = innerBorder3;
+		v3.y = depth;
+
+		_mesh.addVertex(v0, v1, v2, v3);
+
+		_mesh.addFace(4, 5, 9, 8);
+		_mesh.addFace(4, 8, 11, 7);
+		_mesh.addFace(5, 6, 10, 9);
+		_mesh.addFace(6, 7, 11, 10);
+
+		_mesh.addFace(8, 9, 10, 11);
+
+		//window split
+		vec3 s1;
+		s1.x = width * 0.6;
+		s1.y = depth * 0.5;
+
+		vec3 s2;
+		s2 = s1;
+		s2.x = width * 0.65;
+
+		vec3 s3;
+		s3 = s2;
+		s3.y = depth;
+
+		vec3 s4;
+		s4 = s1;
+		s4.y = depth;
+
+
+		vec3 s5;
+		s5 = s1;
+		s5.z = height;
+
+		vec3 s6;
+		s6 = s2;
+		s6.z = height;
+
+		vec3 s7;
+		s7 = s6;
+		s7.y = depth;
+
+		vec3 s8;
+		s8 = s5;
+		s8.y = depth;
+
+		_mesh.addVertex(s1, s2, s3, s4, s5, s6, s7, s8);
+
+		_mesh.addFace(12, 16, 17, 13);
+		_mesh.addFace(13, 17, 18, 14);
+		_mesh.addFace(15, 19, 16, 12);
+	}
+}

@@ -1,0 +1,7 @@
+settings {
+	DEBUG = false;
+	VERBOSE = false;
+    EXPORT = false;
+    ITERATIONS = 0;
+    SEED = 0;
+}

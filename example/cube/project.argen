@@ -1,0 +1,7 @@
+#include settings.argen
+#include Initial.argen
+#include Brick.argen
+#include XSpawner.argen
+#include YSpawner.argen
+#include ZSpawner.argen
+#include ZSpawner.argen

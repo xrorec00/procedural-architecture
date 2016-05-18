@@ -1,0 +1,86 @@
+symbol Roof{
+	float width = 1.0;
+	float depth = 1.0;
+	float height = 0.2;
+	float rimSize = 0.2;
+}{
+	//outer side of edge
+	vec3 outerBottom0 = {0.0, 0.0, 0.0};
+	vec3 outerBottom1 = {0.0, depth, 0.0};
+	vec3 outerBottom2 = {width, depth, 0.0};
+	vec3 outerBottom3 = {width, 0.0, 0.0};
+
+	vec3 outerTop0 = {0.0, 0.0, height};
+	vec3 outerTop1 = {0.0, depth, height};
+	vec3 outerTop2 = {width, depth, height};
+	vec3 outerTop3 = {width, 0.0, height};
+
+	_mesh.addVertex(outerBottom0, outerBottom1, outerBottom2, outerBottom3);
+	_mesh.addVertex(outerTop0, outerTop1, outerTop2, outerTop3);
+
+	_mesh.addFace(1, 5, 4, 0);
+	_mesh.addFace(2, 6, 5, 1);
+	_mesh.addFace(3, 7, 6, 2);
+	_mesh.addFace(0, 4, 7, 3);
+
+	//faces count : 8
+
+	//top of edge
+	vec3 innerTop0;
+	innerTop0 = outerTop0;
+	innerTop0.x = innerTop0.x + rimSize;
+	innerTop0.y = innerTop0.y + rimSize;
+
+	vec3 innerTop1;
+	innerTop1 = outerTop1;
+	innerTop1.x = innerTop1.x + rimSize;
+	innerTop1.y = innerTop1.y - rimSize;
+
+	vec3 innerTop2;
+	innerTop2 = outerTop2;
+	innerTop2.x = innerTop2.x - rimSize;
+	innerTop2.y = innerTop2.y - rimSize;
+
+	vec3 innerTop3;
+	innerTop3 = outerTop3;
+	innerTop3.x = innerTop3.x - rimSize;
+	innerTop3.y = innerTop3.y + rimSize;
+
+	_mesh.addVertex(innerTop0, innerTop1, innerTop2, innerTop3);
+
+	_mesh.addFace(8, 4, 5, 9);
+	_mesh.addFace(9, 5, 6, 10);
+	_mesh.addFace(10, 6, 7, 11);
+	_mesh.addFace(11, 7, 4, 8);
+
+	//inner side of edge
+	vec3 innerBottom0;
+	innerBottom0 = outerBottom0;
+	innerBottom0.x = innerBottom0.x + rimSize;
+	innerBottom0.y = innerBottom0.y + rimSize;
+
+	vec3 innerBottom1;
+	innerBottom1 = outerBottom1;
+	innerBottom1.x = innerBottom1.x + rimSize;
+	innerBottom1.y = innerBottom1.y - rimSize;
+
+	vec3 innerBottom2;
+	innerBottom2 = outerBottom2;
+	innerBottom2.x = innerBottom2.x - rimSize;
+	innerBottom2.y = innerBottom2.y - rimSize;
+
+	vec3 innerBottom3;
+	innerBottom3 = outerBottom3;
+	innerBottom3.x = innerBottom3.x - rimSize;
+	innerBottom3.y = innerBottom3.y + rimSize;
+
+	_mesh.addVertex(innerBottom0, innerBottom1, innerBottom2, innerBottom3);
+
+	_mesh.addFace(12, 8, 9, 13);
+	_mesh.addFace(13, 9, 10, 14);
+	_mesh.addFace(14, 10, 11, 15);
+	_mesh.addFace(15, 11, 8, 12);
+
+	//top of roof
+	_mesh.addFace(12, 13, 14, 15);
+}

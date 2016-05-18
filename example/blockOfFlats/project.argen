@@ -1,0 +1,12 @@
+#include settings.argen
+#include Initial.argen
+#include Brick.argen
+#include Floor.argen
+#include Roof.argen
+#include Cellar.argen
+#include Stairs.argen
+#include Wall.argen
+#include Entrance.argen
+#include Balcony.argen
+#include WindowWall.argen
+#include BlockOfFlats.argen

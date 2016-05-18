@@ -1,0 +1,20 @@
+symbol ZSpawner {
+	int zCount = 5;
+}
+
+rule ZSpawnerRule[1] {
+	if ($0._type == "ZSpawner") {
+		return true;
+	}
+	else{
+		return false;
+	}
+}{
+	int i;
+	for (i=0; i<$0.zCount; i++) {
+		Brick brick;
+		brick._position = brick._position + $0._position;
+		brick._position.z = brick._position.z + i * 2;
+		_output.add(brick);
+	}
+}

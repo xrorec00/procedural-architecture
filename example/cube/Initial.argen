@@ -1,0 +1,11 @@
+rule initial[0] {
+	if (_output.empty()) {
+		return true;
+	}
+	else{
+		return false;
+	}
+}{
+	XSpawner xSpawner;
+	_output.add(xSpawner);
+}

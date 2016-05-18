@@ -1,0 +1,12 @@
+rule initial[0] {
+	if (_output.empty()) {
+		return true;
+	}
+	else{
+		return false;
+	}
+}{
+	BlockOfFlats block;
+	
+	_output.add(block);
+}

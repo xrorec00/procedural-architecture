@@ -1,0 +1,36 @@
+symbol Wall {
+	vec3 startTop;
+	vec3 startBottom;
+
+	vec3 endTop;
+	vec3 endBottom;
+}{
+	_mesh.addVertex(startTop, startBottom, endTop, endBottom);
+	_mesh.addFace(1, 0, 2, 3);
+}
+
+rule wallRule[2] {
+	if ($0._type == "Brick") {
+		if ($1._type == "Brick") {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else{
+		return false;
+	}
+}{
+	Wall wall;
+
+	wall.startBottom = $0._position;
+	wall.startTop = $0._position;
+	wall.startTop.z = wall.startTop.z + $0.height;
+
+	wall.endBottom = $1._position;
+	wall.endTop = $1._position;
+	wall.endTop.z = wall.endTop.z + $1.height;
+
+	_output.add(wall);
+}
